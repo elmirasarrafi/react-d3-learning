@@ -2,14 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { useData } from '../DataContext';
 
-const LineChart = () => {
+const ComboChart = () => {
   const d3Container = useRef(null);
-  const { lineChartData } = useData();
+  const { comboChartData } = useData();
 
   useEffect(() => {
     if (d3Container.current) {
       d3.select(d3Container.current).select('svg').remove();
-      const data = lineChartData;
+      const data = comboChartData;
 
       const margin = { top: 20, right: 30, bottom: 30, left: 40 };
       const width = 300 - margin.left - margin.right;
@@ -27,13 +27,9 @@ const LineChart = () => {
         .range([0, width]);
 
       const y = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.value)])
+        .domain([0, d3.max(data, d => Math.max(d.value1, d.value2))])
         .nice()
         .range([height, 0]);
-
-      const line = d3.line()
-        .x(d => x(d.date))
-        .y(d => y(d.value));
 
       svg.append('g')
         .attr('transform', `translate(0,${height})`)
@@ -42,16 +38,31 @@ const LineChart = () => {
       svg.append('g')
         .call(d3.axisLeft(y));
 
+      const line1 = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.value1));
+
+      const line2 = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.value2));
+
       svg.append('path')
         .datum(data)
         .attr('fill', 'none')
         .attr('stroke', 'steelblue')
         .attr('stroke-width', 1.5)
-        .attr('d', line);
+        .attr('d', line1);
+
+      svg.append('path')
+        .datum(data)
+        .attr('fill', 'none')
+        .attr('stroke', 'orange')
+        .attr('stroke-width', 1.5)
+        .attr('d', line2);
     }
-  }, [lineChartData]);
+  }, [comboChartData]);
 
   return <div className="chart-container" ref={d3Container}></div>;
 };
 
-export default LineChart;
+export default ComboChart;

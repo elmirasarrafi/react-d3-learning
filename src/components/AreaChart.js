@@ -2,14 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { useData } from '../DataContext';
 
-const LineChart = () => {
+const AreaChart = () => {
   const d3Container = useRef(null);
-  const { lineChartData } = useData();
+  const { areaChartData } = useData();
 
   useEffect(() => {
     if (d3Container.current) {
       d3.select(d3Container.current).select('svg').remove();
-      const data = lineChartData;
+      const data = areaChartData;
 
       const margin = { top: 20, right: 30, bottom: 30, left: 40 };
       const width = 300 - margin.left - margin.right;
@@ -31,10 +31,6 @@ const LineChart = () => {
         .nice()
         .range([height, 0]);
 
-      const line = d3.line()
-        .x(d => x(d.date))
-        .y(d => y(d.value));
-
       svg.append('g')
         .attr('transform', `translate(0,${height})`)
         .call(d3.axisBottom(x));
@@ -44,14 +40,17 @@ const LineChart = () => {
 
       svg.append('path')
         .datum(data)
-        .attr('fill', 'none')
+        .attr('fill', 'lightblue')
         .attr('stroke', 'steelblue')
         .attr('stroke-width', 1.5)
-        .attr('d', line);
+        .attr('d', d3.area()
+          .x(d => x(d.date))
+          .y0(height)
+          .y1(d => y(d.value)));
     }
-  }, [lineChartData]);
+  }, [areaChartData]);
 
   return <div className="chart-container" ref={d3Container}></div>;
 };
 
-export default LineChart;
+export default AreaChart;

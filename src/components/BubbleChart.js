@@ -2,14 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import { useData } from '../DataContext';
 
-const ScatterPlot = () => {
+const BubbleChart = () => {
   const d3Container = useRef(null);
-  const { scatterPlotData } = useData();
+  const { bubbleChartData } = useData();
 
   useEffect(() => {
     if (d3Container.current) {
       d3.select(d3Container.current).select('svg').remove();
-      const data = scatterPlotData;
+      const data = bubbleChartData;
 
       const width = 300;
       const height = 300;
@@ -32,7 +32,7 @@ const ScatterPlot = () => {
         .append('circle')
         .attr('cx', d => x(d.x))
         .attr('cy', d => y(d.y))
-        .attr('r', 5)
+        .attr('r', d => d.r)
         .attr('fill', 'teal');
 
       svg.append('g')
@@ -42,9 +42,9 @@ const ScatterPlot = () => {
       svg.append('g')
         .call(d3.axisLeft(y));
     }
-  }, [scatterPlotData]);
+  }, [bubbleChartData]);
 
   return <div className="chart-container" ref={d3Container}></div>;
 };
 
-export default ScatterPlot;
+export default BubbleChart;

@@ -1,13 +1,15 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
+import { useData } from '../DataContext';
 
 const PieChart = () => {
   const d3Container = useRef(null);
+  const { pieChartData } = useData();
 
   useEffect(() => {
     if (d3Container.current) {
-      d3.select(d3Container.current).select("svg").remove();
-      const data = [12, 5, 6, 6, 9, 10];
+      d3.select(d3Container.current).select('svg').remove();
+      const data = pieChartData;
       const width = 300;
       const height = 300;
       const margin = 40;
@@ -39,7 +41,7 @@ const PieChart = () => {
         .style('stroke-width', '2px')
         .style('opacity', 0.7);
     }
-  }, []);
+  }, [pieChartData]);
 
   return <div className="chart-container" ref={d3Container}></div>;
 };
