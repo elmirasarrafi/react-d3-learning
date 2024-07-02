@@ -14,8 +14,8 @@
 }
 
 .chart-container {
-  width: 25%;
-  height: 300px;
+  width: 45%;
+  height: 400px;
   margin: 10px;
   border: 1px solid #ddd;
   display: flex;
@@ -23,6 +23,6 @@
   justify-content: center;
 }
 .chart-container.geo {
-  width: 50%;
+  width: 90%;
   height: 600px;
 }

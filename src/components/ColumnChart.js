@@ -12,7 +12,7 @@ const ColumnChart = () => {
       const data = columnChartData;
 
       const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-      const width = 300 - margin.left - margin.right;
+      const width = 400 - margin.left - margin.right;
       const height = 300 - margin.top - margin.bottom;
 
       const svg = d3.select(d3Container.current)
